@@ -23,6 +23,7 @@ interface GridProps extends ContainerProps {
   justifySelf?: 'start' | 'end' | 'center' | 'stretch';
   alignSelf?: 'start' | 'end' | 'center' | 'stretch';
 
+  gridTemplateAreas?: string;
   gridTemplateColumns?: string;
   gridTemplateRows?: string;
   gridGap?: string;
@@ -37,6 +38,7 @@ const Grid = styled(Container)<GridProps>`
   justify-self: ${({ justifySelf }) => justifySelf};
   align-self: ${({ alignSelf }) => alignSelf};
 
+  grid-template-areas: ${({ gridTemplateAreas }) => gridTemplateAreas};
   grid-template-columns: ${({ gridTemplateColumns }) => gridTemplateColumns};
   grid-template-rows: ${({ gridTemplateRows }) => gridTemplateRows};
   gap: ${({ gridGap }) => gridGap};
