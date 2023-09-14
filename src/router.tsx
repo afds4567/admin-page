@@ -1,33 +1,37 @@
-import { ComponentType } from 'react';
+import { ReactNode } from 'react';
 import { createBrowserRouter } from 'react-router-dom';
 import RootLayout from './components/Layout/RootLayout';
+import Home from './pages/Home';
+import Members from './pages/Members';
+import Topics from './pages/Topics';
+import Pins from './pages/Pins';
 
 interface RouteElement {
   path: string;
-  component: ComponentType;
+  element: ReactNode;
   children?: RouteElement[];
 }
 
 const routes: RouteElement[] = [
   {
     path: '/',
-    component: RootLayout,
+    element: <RootLayout />,
     children: [
       {
         path: '/',
-        component: () => <div>Home</div>
+        element: <Home />
       },
       {
-        path: '/member',
-        component: () => <div>Member</div>
+        path: '/members',
+        element: <Members />
       },
       {
-        path: '/topic',
-        component: () => <div>Topic</div>
+        path: '/topics',
+        element: <Topics />
       },
       {
-        path: '/pin',
-        component: () => <div>Pin</div>
+        path: '/pins',
+        element: <Pins />
       }
     ]
   }
@@ -35,16 +39,11 @@ const routes: RouteElement[] = [
 
 const router = createBrowserRouter(
   routes.map((route) => {
-    const childrenRoutes = route.children?.map((childRoute) => ({
-      path: childRoute.path,
-      element: <childRoute.component />
-    }));
+    const childrenRoutes = route.children?.map((childRoute) => {
+      return { path: childRoute.path, element: childRoute.element };
+    });
 
-    return {
-      path: route.path,
-      element: <route.component />,
-      children: childrenRoutes
-    };
+    return { path: route.path, element: route.element, children: childrenRoutes };
   })
 );
 
