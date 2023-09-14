@@ -22,7 +22,7 @@ module.exports = {
       template: './index.html'
     }),
     new CopyWebpackPlugin({
-      patterns: [{ from: './public', to: './public' }]
+      patterns: [{ from: 'public', to: 'dist' }]
     }),
     new Dotenv()
   ],
@@ -47,5 +47,5 @@ module.exports = {
         }
       }
     ]
-  },
+  }
 };
