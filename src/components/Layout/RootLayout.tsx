@@ -1,17 +1,18 @@
 import styled from 'styled-components';
 import Grid from '../common/Grid';
 import { Outlet } from 'react-router-dom';
+import GNB from './Gnb';
 
 const RootLayout = () => {
   return (
     <Grid
       height="100vh"
       gridTemplateColumns="200px 1fr"
-      gridTemplateRows="100px auto"
+      gridTemplateRows="50px auto"
       gridGap="10px"
       gridTemplateAreas="'header header' 'sidebar main'"
     >
-      <Header>Header Area</Header>
+      <GNB />
       <Sidebar>sideBar</Sidebar>
       <MainContent>
         <Outlet />
@@ -19,11 +20,6 @@ const RootLayout = () => {
     </Grid>
   );
 };
-
-const Header = styled.header`
-  grid-area: header;
-  background-color: red;
-`;
 
 const Sidebar = styled.div`
   grid-area: sidebar;
