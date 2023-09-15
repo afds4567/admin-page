@@ -1,41 +1,43 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
-function useFetch(arg: any) {
-  const [data, setData] = useState(null);
-  const [error, setError] = useState(null);
-  const [promise, setPromise] = useState<Promise<any> | null>(null);
+export async function fetchData(url: string) {
+  const response = await fetch(url);
+  if (!response.ok) {
+    throw new Error(`HTTP error! status: ${response.status}`);
+  }
+  return await response.json();
+}
+
+const useFetch = <T>(fetchFunction: (url: string) => Promise<T>, url: string): T | undefined => {
+  const [promise, setPromise] = useState<Promise<void>>();
+  const [status, setStatus] = useState<'pending' | 'fulfilled' | 'error'>('pending');
+  const [result, setResult] = useState<T>();
+  const [error, setError] = useState<Error>();
 
   useEffect(() => {
-    let pending = true;
+    setStatus('pending');
     setPromise(
-      new Promise((resolve, reject) => {
-        fetch(arg)
-          .then((response) => response.json())
-          .then((result) => {
-            if (pending) {
-              setData(result);
-              resolve(result);
-            }
-          })
-          .catch((err) => {
-            if (pending) {
-              setError(err);
-              reject(err);
-            }
-          });
-      })
+      fetchFunction(url)
+        .then((data) => {
+          setStatus('fulfilled');
+          setResult(data);
+        })
+        .catch((err) => {
+          setStatus('error');
+          setError(err);
+        })
     );
+  }, [url]);
 
-    return () => {
-      pending = false;
-    };
-  }, [arg]);
+  if (status === 'pending' && promise) {
+    throw promise;
+  }
 
-  if (error) throw error;
+  if (status === 'error') {
+    throw error;
+  }
 
-  if (!data) throw promise;
-
-  return data;
-}
+  return result;
+};
 
 export default useFetch;
