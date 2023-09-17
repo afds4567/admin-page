@@ -7,27 +7,24 @@ const RootLayout = () => {
   return (
     <Grid
       height="100vh"
-      gridTemplateColumns="200px 1fr"
       gridTemplateRows="50px auto"
       gridGap="10px"
-      gridTemplateAreas="'header header' 'sidebar main'"
+      gridTemplateAreas="'header' 'main'"
     >
       <GNB />
-      <Sidebar>sideBar</Sidebar>
-      <MainContent>
+      <Main>
         <Outlet />
-      </MainContent>
+      </Main>
     </Grid>
   );
 };
 
-const Sidebar = styled.div`
-  grid-area: sidebar;
-  background-color: blue;
-`;
-
-const MainContent = styled.main`
+const Main = styled.main`
   grid-area: main;
   background-color: yellowgreen;
+  display: grid;
+  grid-template-columns: 30% auto;
+  grid-template-areas: 'sideBar mainContent';
+  overflow: scroll;
 `;
 export default RootLayout;
