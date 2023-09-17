@@ -14,7 +14,8 @@ module.exports = {
   devServer: {
     hot: true,
     open: true,
-    historyApiFallback: true
+    historyApiFallback: true,
+    port: 3000
   },
   devtool: 'source-map',
   plugins: [
