@@ -1,17 +1,24 @@
 import { useState } from 'react';
 import useFetch, { fetchData } from '../../hooks/useFetch';
 import styled from 'styled-components';
+import { Topic } from '../../types/topic';
+import { Member } from '../../types/member';
+import { Pin } from '../../types/pin';
 
 type Props = {
   url: string;
   title: string;
+  children?: React.ReactNode;
 };
 
-const MainLayout = ({ url, title }: Props) => {
-  const items = useFetch(fetchData, url);
-  const [selectedItem, setSelectedItem] = useState<any>();
+type Item = Topic | Member | Pin;
+type Items = Topic[] | Member[] | Pin[];
 
-  const onClickItem = (item: any) => {
+const MainLayout = ({ url, title, children }: Props) => {
+  const items = useFetch<Items>(fetchData, url);
+  const [selectedItem, setSelectedItem] = useState<Item>();
+
+  const onClickItem = (item: Item) => {
     setSelectedItem(item);
   };
 
@@ -20,15 +27,16 @@ const MainLayout = ({ url, title }: Props) => {
       <SideBar>
         <PageTitle>{title}</PageTitle>
         <ListContainer>
-          {items?.map((item: any) => (
+          {items?.map((item) => (
             <ListItem key={item.id} onClick={() => onClickItem(item)}>
-              {item.name}
+              {'nickName' in item ? item.nickName : item.name}
             </ListItem>
           ))}
         </ListContainer>
       </SideBar>
       <MainContent>
-        {selectedItem ? <div>{selectedItem.name}</div> : <div>선택하세요</div>}
+        {selectedItem ? <div>{selectedItem.id}</div> : <div>선택하세요</div>}
+        {children}
       </MainContent>
     </>
   );
