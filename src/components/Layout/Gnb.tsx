@@ -1,20 +1,21 @@
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 const Nav = styled.nav`
   display: flex;
   grid-area: header;
   justify-content: space-around;
+  align-items: center;
   padding: 1rem;
   background-color: black;
 `;
 
-const StyledLink = styled(Link)`
+const StyledLink = styled(Link)<{ selected: boolean }>`
   text-decoration: none;
-  color: white;
-
+  color: ${(props) => (props.selected ? 'red' : 'white')};
+  font-weight: ${(props) => (props.selected ? 'bold' : 'normal')};
   &:hover {
-    color: gray;
+    color: ${(props) => (props.selected ? 'red' : 'gray')};
   }
 `;
 
@@ -26,10 +27,12 @@ const menu = [
 ];
 
 const GNB = () => {
+  const location = useLocation();
+
   return (
     <Nav>
       {menu.map((item, index) => (
-        <StyledLink key={index} to={item.address}>
+        <StyledLink key={index} to={item.address} selected={location.pathname === item.address}>
           {item.name}
         </StyledLink>
       ))}
