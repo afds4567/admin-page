@@ -46,6 +46,10 @@ module.exports = {
         options: {
           name: 'static/[name].[ext]'
         }
+      },
+      {
+        test: /\.svg$/,
+        use: ['@svgr/webpack']
       }
     ]
   }
