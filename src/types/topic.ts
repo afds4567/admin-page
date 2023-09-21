@@ -9,7 +9,7 @@ export interface Topic {
   isInAtlas: boolean;
   bookmarkCount: number;
   isBookmarked: boolean;
-  updatedAt: string;
+  updatedAt: Date;
 }
 
 export interface TopicDetail {
@@ -23,6 +23,6 @@ export interface TopicDetail {
   bookmarkCount: number;
   isBookmarked: boolean;
   canUpdate: boolean;
-  updatedAt: string;
+  updatedAt: Date;
   pins: Pin[];
 }

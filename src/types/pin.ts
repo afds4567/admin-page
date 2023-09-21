@@ -1,3 +1,8 @@
+interface PinImageDetail {
+  id: number;
+  imageUrl: string;
+}
+
 export interface Pin {
   id: number;
   name: string;
@@ -6,4 +11,7 @@ export interface Pin {
   creator: string;
   latitude: number;
   longitude: number;
+  canUpdate: string;
+  updatedAt: Date;
+  images: PinImageDetail[];
 }

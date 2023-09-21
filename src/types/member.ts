@@ -5,7 +5,7 @@ export interface Member {
   nickName: string;
   email: string;
   imageUrl: string;
-  updatedAt: string;
+  updatedAt: Date;
 }
 
 export interface MemberDetail {
@@ -13,6 +13,6 @@ export interface MemberDetail {
   nickName: string;
   email: string;
   imageUrl: string;
-  updatedAt: string;
+  updatedAt: Date;
   topics: Topic[];
 }
