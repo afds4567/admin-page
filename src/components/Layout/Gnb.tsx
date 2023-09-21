@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { Link, useLocation } from 'react-router-dom';
+import { useDBContext } from '../../context/DbSelectContext';
 
 const Nav = styled.nav`
   display: flex;
@@ -28,7 +29,7 @@ const menu = [
 
 const GNB = () => {
   const location = useLocation();
-
+  const { selectedDB, handleDBChange } = useDBContext();
   return (
     <Nav>
       {menu.map((item, index) => (
@@ -36,6 +37,10 @@ const GNB = () => {
           {item.name}
         </StyledLink>
       ))}
+      <select onChange={handleDBChange} value={selectedDB}>
+        <option value="dev">배포서버</option>
+        <option value="prod">운영서버</option>
+      </select>
     </Nav>
   );
 };
