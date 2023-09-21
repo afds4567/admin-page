@@ -10,7 +10,7 @@ import {
   DetailImage,
   Header,
   PositionContainer
-} from './DetailLayout';
+} from './DetailLayoutStyle';
 import { useDBContext } from '../context/DbSelectContext';
 import { DEFAULT_URL } from '../constants/constant';
 
@@ -26,18 +26,7 @@ const PinDetailComponent = ({ pinId }: PinDetailComponentProps) => {
   const pinDetail = useFetch<Pin>(fetchData, url);
 
   if (!pinDetail) return <div>핀 정보가 없습니다.</div>;
-  const {
-    id,
-    name,
-    address,
-    description,
-    creator,
-    latitude,
-    longitude,
-    canUpdate,
-    updatedAt,
-    images
-  } = pinDetail;
+  const { name, address, description, creator, latitude, longitude, updatedAt, images } = pinDetail;
 
   const onImageError = (e: any) => {
     e.target.src = DefaultImage;

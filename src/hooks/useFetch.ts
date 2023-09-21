@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 import { DEFAULT_URL } from '../constants/constant';
-
-export async function fetchData(url: string, method = 'GET') {
+import { useDBContext } from '../context/DbSelectContext';
+//
+export async function fetchData(url: string, selectedDB: any, method = 'GET') {
   const accessToken = localStorage.getItem('userToken');
 
   const headers: any = {};
@@ -9,6 +10,7 @@ export async function fetchData(url: string, method = 'GET') {
   if (accessToken) {
     headers['Authorization'] = `Bearer ${accessToken}`;
   }
+
   console.log(accessToken, method, headers);
   console.log(url);
   let response = await fetch(url, {
@@ -17,15 +19,17 @@ export async function fetchData(url: string, method = 'GET') {
   });
 
   console.log(response);
-  // console.log('response', response);
+  const selectedURL = DEFAULT_URL[selectedDB];
   //토큰이 만료되어 401 에러가 발생하면
   if (response.status === 401) {
     try {
       //토큰을 재발급 받는다.
-      const refreshResponse = await fetch(`${DEFAULT_URL}/refresh-token`, {
+
+      const refreshResponse = await fetch(`${selectedURL}/refresh-token`, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${accessToken}`
         }
       });
 
@@ -49,16 +53,21 @@ export async function fetchData(url: string, method = 'GET') {
   return response.json();
 }
 
-const useFetch = <T>(fetchFunction: (url: string) => Promise<T>, url: string): T | undefined => {
+const useFetch = <T>(
+  fetchFunction: (url: string, selectedDB: string) => Promise<T>,
+  url: string
+): T | undefined => {
   const [promise, setPromise] = useState<Promise<void>>();
   const [status, setStatus] = useState<'pending' | 'fulfilled' | 'error'>('pending');
   const [result, setResult] = useState<T>();
   const [error, setError] = useState<Error>();
 
+  const { selectedDB } = useDBContext();
+
   useEffect(() => {
     setStatus('pending');
     setPromise(
-      fetchFunction(url)
+      fetchFunction(url, selectedDB)
         .then((data) => {
           setStatus('fulfilled');
           setResult(data);

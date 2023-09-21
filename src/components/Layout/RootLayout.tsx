@@ -8,9 +8,9 @@ const RootLayout = () => {
   return (
     <DBProvider>
       <Grid
+        padding="1rem"
         gridTemplateRows="50px auto"
         height="100vh"
-        gridGap="10px"
         gridTemplateAreas="'header' 'main'"
       >
         <GNB />
@@ -24,11 +24,17 @@ const RootLayout = () => {
 
 const Main = styled.main`
   grid-area: main;
-  background-color: yellowgreen;
+  background-color: black;
   display: grid;
   height: 100%;
+  width: 100%;
   grid-template-columns: 30% auto;
   grid-template-areas: 'sideBar mainContent';
-  overflow: scroll;
+  overflow: auto;
+  ::-webkit-scrollbar {
+    display: none;
+  }
+  // Firefox
+  scrollbar-width: none;
 `;
 export default RootLayout;

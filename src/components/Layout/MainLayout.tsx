@@ -6,6 +6,7 @@ import { Member } from '../../types/member';
 import { Pin } from '../../types/pin';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { DEFAULT_URL } from '../../constants/constant';
+import { useDBContext } from '../../context/DbSelectContext';
 
 type Props = {
   url: string;
@@ -20,6 +21,9 @@ const MainLayout = ({ url, title, children }: Props) => {
   const location = useLocation();
   const navigate = useNavigate();
 
+  const { selectedDB } = useDBContext();
+  const selectedUrl = DEFAULT_URL[selectedDB];
+
   const items = useFetch<Items>(fetchData, url);
   const [selectedItem, setSelectedItem] = useState<Item>();
 
@@ -31,7 +35,7 @@ const MainLayout = ({ url, title, children }: Props) => {
 
   const onClickDelete = async (item: Item) => {
     // 삭제 API 호출
-    const deleteUrl = `${DEFAULT_URL}/admin${location.pathname}/${item?.id}`;
+    const deleteUrl = `${selectedUrl}/admin${location.pathname}/${item?.id}`;
     try {
       await fetchData(deleteUrl, 'DELETE'); // Add await here
     } catch (e) {
@@ -67,13 +71,27 @@ export const SideBar = styled.div`
   grid-area: sideBar;
   padding: 1rem;
   height: 100%;
-  overflow-y: scroll;
+  background-color: #000; // Change to black
+
+  overflow-y: auto;
+  // Chrome, Safari and Opera
+  ::-webkit-scrollbar {
+    display: none;
+  }
+
+  // Firefox
+  scrollbar-width: none;
+
+  // IE and Edge
+  -ms-overflow-style: none;
 `;
 
 export const PageTitle = styled.h1`
   font-size: 2.5rem;
   font-weight: 700;
   margin: 0;
+  margin-bottom: 1rem;
+  color: white;
 `;
 
 export const ListItem = styled.li<{ selected: boolean }>`
@@ -82,9 +100,12 @@ export const ListItem = styled.li<{ selected: boolean }>`
   align-items: center;
   width: 100%;
   height: 50px;
-  background-color: ${(props) => (props.selected ? 'yellow' : '#f0f0f0')};
+  background-color: ${(props) => (props.selected ? '#f39c12' : '#000')};
+  color: #ecf0f1;
+
   padding: 10px;
   margin: 10px;
+  border: 1px solid #e0e0e0;
   border-radius: 5px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 
@@ -95,7 +116,7 @@ export const ListItem = styled.li<{ selected: boolean }>`
 `;
 
 export const ListContainer = styled.ul`
-  background-color: aliceblue;
+  background-color: #000;
   list-style: none;
   padding: 0;
   display: flex;
@@ -105,21 +126,19 @@ export const ListContainer = styled.ul`
 
 export const MainContent = styled.div`
   grid-area: mainContent;
-  background-color: beige;
+  background-color: #000;
   height: 100%;
-`;
-
-export const EditButton = styled.button`
-  padding: 0.5em 0.75em;
-  color: #ffffff;
-  background-color: #007bff;
-  border-radius: 0.25rem;
-  border: none;
-
-  &:hover {
-    cursor: pointer;
-    background-color: #0056b3;
+  overflow-y: auto;
+  // Chrome, Safari and Opera
+  ::-webkit-scrollbar {
+    display: none;
   }
+
+  // Firefox
+  scrollbar-width: none;
+
+  // IE and Edge
+  -ms-overflow-style: none;
 `;
 
 export const DeleteButton = styled.button`
@@ -129,9 +148,19 @@ export const DeleteButton = styled.button`
   border-radius: 0.25rem;
   border: none;
 
+  transition: all 0.3s ease;
+
   &:hover {
     cursor: pointer;
     background-color: #c82333;
+    transform: scale(1.05);
+    box-shadow: rgba(0, 0, 0, 0.2) -1px -1px, rgba(255, 255, 255, 0.7) 1px -1px,
+      rgba(255, 255, 255, 0.7) -1px -2px;
+  }
+
+  &:active {
+    transform: scale(0.95);
   }
 `;
+
 export default MainLayout;
