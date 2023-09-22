@@ -3,10 +3,10 @@ import { Link, useLocation } from 'react-router-dom';
 import { useDBContext } from '../../context/DbSelectContext';
 
 const menu = [
-  { name: 'Home', address: '/' },
-  { name: '회원관리', address: '/members' },
-  { name: '토픽', address: '/topics' },
-  { name: '핀', address: '/pins' }
+  { name: 'Home', address: '/admin' },
+  { name: '회원관리', address: '/admin/members' },
+  { name: '토픽', address: '/admin/topics' },
+  { name: '핀', address: '/admin/pins' }
 ];
 
 const GNB = () => {
