@@ -30,7 +30,7 @@ const TopicDetailComponent: React.FC<TopicDetailComponentProps> = ({ topicId }) 
     // 이미지 삭제 API 호출
     const deleteUrl = `${selectedUrl}/admin/topics/${topicId}/images`;
     try {
-      await fetchData(deleteUrl, 'DELETE');
+      await fetchData(deleteUrl, selectedDB, 'DELETE');
     } catch (e) {
       console.error(e);
     }

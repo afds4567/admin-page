@@ -34,9 +34,9 @@ const PinDetailComponent = ({ pinId }: PinDetailComponentProps) => {
   const { year, month, day } = parseDate(updatedAt);
   const onClickImageDelete = async (pinId: any) => {
     // 이미지 삭제 API 호출
-    const deleteUrl = `${selectedUrl}/pins/${pinId}/images`;
+    const deleteUrl = `${selectedUrl}/pins/images/${pinId}`;
     try {
-      await fetchData(deleteUrl, 'DELETE');
+      await fetchData(deleteUrl, selectedDB, 'DELETE');
     } catch (e) {
       console.error(e);
     }
@@ -50,19 +50,18 @@ const PinDetailComponent = ({ pinId }: PinDetailComponentProps) => {
       </Header>
       {images?.length !== 0 ? (
         images.map((image) => (
-          <DetailImage
-            key={image.id}
-            src={image.imageUrl || DefaultImage}
-            alt="주황치마다빈치"
-            onError={onImageError}
-          />
+          <>
+            <DetailImage
+              key={image.id}
+              src={image.imageUrl || DefaultImage}
+              alt="주황치마다빈치"
+              onError={onImageError}
+            />
+            <DeleteButton onClick={() => onClickImageDelete(pinId)}>이미지 삭제</DeleteButton>
+          </>
         ))
       ) : (
         <DetailImage src={DefaultImage} />
-      )}
-
-      {images.length !== 0 && (
-        <DeleteButton onClick={() => onClickImageDelete(pinId)}>이미지 삭제</DeleteButton>
       )}
 
       <ContentContainer>
