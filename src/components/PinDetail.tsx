@@ -34,7 +34,7 @@ const PinDetailComponent = ({ pinId }: PinDetailComponentProps) => {
   const { year, month, day } = parseDate(updatedAt);
   const onClickImageDelete = async (pinId: any) => {
     // 이미지 삭제 API 호출
-    const deleteUrl = `${selectedUrl}/pins/images/${pinId}`;
+    const deleteUrl = `${selectedUrl}/admin/pins/images/${pinId}`;
     try {
       await fetchData(deleteUrl, selectedDB, 'DELETE');
     } catch (e) {

@@ -35,9 +35,9 @@ const MainLayout = ({ url, title, children }: Props) => {
 
   const onClickDelete = async (item: Item) => {
     // 삭제 API 호출
-    const deleteUrl = `${selectedUrl}/admin${location.pathname}/${item?.id}`;
+    const deleteUrl = `${selectedUrl}${location.pathname}/${item?.id}`;
     try {
-      await fetchData(deleteUrl, 'DELETE'); // Add await here
+      await fetchData(deleteUrl, selectedDB, 'DELETE'); // Add await here
     } catch (e) {
       console.error(e);
     }
