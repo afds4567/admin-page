@@ -1,53 +1,22 @@
 import { useEffect, useState } from 'react';
-import { DEFAULT_URL } from '../constants/constant';
 import { useDBContext } from '../context/DbSelectContext';
 //
 export async function fetchData(url: string, selectedDB: any, method = 'GET') {
-  const accessToken = localStorage.getItem('userToken');
-
   const headers: any = {};
 
-  if (accessToken) {
-    headers['Authorization'] = `Bearer ${accessToken}`;
-  }
+  headers['Authorization'] = `${process.env.REACT_APP_ADMIN_KEY}`;
 
-  console.log(accessToken, method, headers);
-  console.log(url);
+  console.log(process.env.REACT_APP_ADMIN_KEY);
+
   let response = await fetch(url, {
     method: method,
     headers: headers
   });
 
-  console.log(response);
-  const selectedURL = DEFAULT_URL[selectedDB];
-  //토큰이 만료되어 401 에러가 발생하면
-  if (response.status === 401) {
-    try {
-      //토큰을 재발급 받는다.
-
-      const refreshResponse = await fetch(`${selectedURL}/refresh-token`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${accessToken}`
-        }
-      });
-
-      if (!refreshResponse.ok) throw new Error('리프레시 토큰을 받지 못했습니다.');
-
-      const data = await refreshResponse.json();
-
-      // 재발급 받은 토큰을 저장한다.
-      localStorage.setItem('userToken', data.accessToken);
-
-      headers['Authorization'] = `Bearer ${data.accessToken}`;
-
-      response = await fetch(url, { method, headers, credentials: 'include' });
-    } catch (error) {
-      console.error(error);
-    }
+  if (method === 'DELETE' && response.status === 204) {
+    window.alert('삭제에 성공했습니다~');
+    return;
   }
-
   if (!response.ok) throw new Error(`HTTP 에러! 상태 코드: ${response.status}`);
 
   return response.json();
