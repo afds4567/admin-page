@@ -1,8 +1,3 @@
-import { DEFAULT_URL } from '../constants/constant';
-import { useDBContext } from '../context/DbSelectContext';
-import useFetch, { fetchData } from '../hooks/useFetch';
-import { MemberDetail } from '../types/member';
-import parseDate from '../utils/parseDate';
 import {
   DetailContainer,
   DetailImage,
@@ -10,7 +5,12 @@ import {
   Tag,
   TagContainer,
   Title
-} from './DetailLayoutStyle';
+} from '../../components/DetailLayoutStyle';
+import { DEFAULT_URL } from '../../constants/constant';
+import { useDBContext } from '../../context/DbSelectContext';
+import useFetch, { fetchData } from '../../hooks/useFetch';
+import { MemberDetail } from '../../types/member';
+import parseDate from '../../utils/parseDate';
 
 interface MemberDetailComponentProps {
   memberId: string;

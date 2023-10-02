@@ -1,11 +1,11 @@
 import { Suspense } from 'react';
 import { useLocation } from 'react-router-dom';
 
-import ErrorBoundary from '../components/ErrorBoundary';
-import MainLayout from '../components/Layout/MainLayout';
-import TopicDetailComponent from '../components/TopicDetail';
-import { DEFAULT_URL } from '../constants/constant';
-import { useDBContext } from '../context/DbSelectContext';
+import ErrorBoundary from '../../components/ErrorBoundary';
+import MainLayout from '../../components/Layout/MainLayout';
+import { DEFAULT_URL } from '../../constants/constant';
+import { useDBContext } from '../../context/DbSelectContext';
+import TopicDetailComponent from './TopicDetail';
 
 const Topic = () => {
   const { selectedDB } = useDBContext();

@@ -1,9 +1,4 @@
-import DefaultImage from '../assets/DefaultImage.png';
-import { DEFAULT_URL } from '../constants/constant';
-import { useDBContext } from '../context/DbSelectContext';
-import useFetch, { fetchData } from '../hooks/useFetch';
-import { Pin } from '../types/pin';
-import parseDate from '../utils/parseDate';
+import DefaultImage from '../../assets/DefaultImage.png';
 import {
   ContentContainer,
   DeleteButton,
@@ -11,7 +6,12 @@ import {
   DetailImage,
   Header,
   PositionContainer
-} from './DetailLayoutStyle';
+} from '../../components/DetailLayoutStyle';
+import { DEFAULT_URL } from '../../constants/constant';
+import { useDBContext } from '../../context/DbSelectContext';
+import useFetch, { fetchData } from '../../hooks/useFetch';
+import { Pin } from '../../types/pin';
+import parseDate from '../../utils/parseDate';
 
 interface PinDetailComponentProps {
   pinId: string;

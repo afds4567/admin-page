@@ -1,16 +1,16 @@
 import { Suspense } from 'react';
 import { useLocation } from 'react-router-dom';
 
-import ErrorBoundary from '../components/ErrorBoundary';
-import MainLayout from '../components/Layout/MainLayout';
-import MemberDetailComponent from '../components/MemberDetail';
-import { DEFAULT_URL } from '../constants/constant';
-import { useDBContext } from '../context/DbSelectContext';
+import ErrorBoundary from '../../components/ErrorBoundary';
+import MainLayout from '../../components/Layout/MainLayout';
+import { DEFAULT_URL } from '../../constants/constant';
+import { useDBContext } from '../../context/DbSelectContext';
+import MemberDetailComponent from './MemberDetail';
 
 const Members = () => {
   const { selectedDB } = useDBContext();
   const selectedUrl = DEFAULT_URL[selectedDB];
-  const url = `${selectedUrl}/members`;
+  const url = `${selectedUrl}/admin/members`;
   const location = useLocation();
   const memberId = location.search.slice(1); // '6'
   return (

@@ -1,10 +1,11 @@
 import { ReactNode } from 'react';
 import { createBrowserRouter } from 'react-router-dom';
+
 import RootLayout from './components/Layout/RootLayout';
 import Home from './pages/Home';
-import Members from './pages/Members';
-import Topics from './pages/Topics';
-import Pins from './pages/Pins';
+import Members from './pages/Member/Members';
+import Pins from './pages/Pin/Pins';
+import Topics from './pages/Topic/Topics';
 
 interface RouteElement {
   path: string;

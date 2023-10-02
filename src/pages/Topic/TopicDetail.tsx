@@ -1,11 +1,16 @@
-import DefaultImage from '../assets/DefaultImage.png';
-import { DEFAULT_URL } from '../constants/constant';
-import { useDBContext } from '../context/DbSelectContext';
-import useFetch, { fetchData } from '../hooks/useFetch';
-import { TopicDetail } from '../types/topic';
-import parseDate from '../utils/parseDate';
-import { ContentContainer, DetailContainer, DetailImage, Header } from './DetailLayoutStyle';
-import { DeleteButton } from './Layout/MainLayout';
+import DefaultImage from '../../assets/DefaultImage.png';
+import {
+  ContentContainer,
+  DetailContainer,
+  DetailImage,
+  Header
+} from '../../components/DetailLayoutStyle';
+import { DeleteButton } from '../../components/Layout/MainLayout';
+import { DEFAULT_URL } from '../../constants/constant';
+import { useDBContext } from '../../context/DbSelectContext';
+import useFetch, { fetchData } from '../../hooks/useFetch';
+import { TopicDetail } from '../../types/topic';
+import parseDate from '../../utils/parseDate';
 
 interface TopicDetailComponentProps {
   topicId: string;
