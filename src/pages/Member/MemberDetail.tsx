@@ -1,3 +1,5 @@
+import { useNavigate } from 'react-router-dom';
+
 import {
   DetailContainer,
   DetailImage,
@@ -17,6 +19,7 @@ interface MemberDetailComponentProps {
 }
 
 const MemberDetailComponent = ({ memberId }: MemberDetailComponentProps) => {
+  const navigate = useNavigate();
   const { selectedDB } = useDBContext();
   const selectedUrl = DEFAULT_URL[selectedDB];
   const url = `${selectedUrl}/admin/members/${memberId}`;
@@ -27,6 +30,9 @@ const MemberDetailComponent = ({ memberId }: MemberDetailComponentProps) => {
   const { nickName, email, imageUrl, updatedAt, topics } = memberDetail;
   const { year, month, day } = parseDate(updatedAt);
 
+  const onClickTag = (topicId: number) => () => {
+    navigate(`/topics?${topicId}`);
+  };
   return (
     <DetailContainer>
       <Header>
@@ -41,7 +47,9 @@ const MemberDetailComponent = ({ memberId }: MemberDetailComponentProps) => {
       <Title>만든 지도 목록</Title>
       <TagContainer>
         {topics?.map((topic) => (
-          <Tag key={topic.id}>{topic.name}</Tag>
+          <Tag key={topic.id} onClick={onClickTag(topic.id)}>
+            {topic.name}
+          </Tag>
         ))}
       </TagContainer>
     </DetailContainer>

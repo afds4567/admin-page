@@ -58,6 +58,7 @@ export const Tag = styled.div`
   margin-right: 10px;
   margin-bottom: 10px;
   border-radius: 20px;
+  cursor: pointer;
 `;
 
 export const Title = styled.div`
