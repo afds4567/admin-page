@@ -1,8 +1,9 @@
-import styled from 'styled-components';
-import Grid from '../common/Grid';
 import { Outlet } from 'react-router-dom';
-import GNB from './Gnb';
+import styled from 'styled-components';
+
 import { DBProvider } from '../../context/DbSelectContext';
+import Grid from '../common/Grid';
+import GNB from './Gnb';
 
 const RootLayout = () => {
   return (

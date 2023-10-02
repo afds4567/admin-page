@@ -1,9 +1,9 @@
-import useFetch, { fetchData } from '../hooks/useFetch';
 import DefaultImage from '../assets/DefaultImage.png';
-import parseDate from '../utils/parseDate';
 import { DEFAULT_URL } from '../constants/constant';
-import { TopicDetail } from '../types/topic';
 import { useDBContext } from '../context/DbSelectContext';
+import useFetch, { fetchData } from '../hooks/useFetch';
+import { TopicDetail } from '../types/topic';
+import parseDate from '../utils/parseDate';
 import { ContentContainer, DetailContainer, DetailImage, Header } from './DetailLayoutStyle';
 import { DeleteButton } from './Layout/MainLayout';
 
@@ -11,7 +11,7 @@ interface TopicDetailComponentProps {
   topicId: string;
 }
 
-const TopicDetailComponent: React.FC<TopicDetailComponentProps> = ({ topicId }) => {
+const TopicDetailComponent = ({ topicId }: TopicDetailComponentProps) => {
   const { selectedDB } = useDBContext();
   const selectedUrl = DEFAULT_URL[selectedDB];
   const url = `${selectedUrl}/topics/${topicId}`;
@@ -22,18 +22,20 @@ const TopicDetailComponent: React.FC<TopicDetailComponentProps> = ({ topicId }) 
     e.target.src = DefaultImage;
   };
 
-  if (!topicDetail) return <div>토픽 정보가 없습니다.</div>;
+  if (topicDetail == null) return <div>토픽 정보가 없습니다.</div>;
   const { name, creator, updatedAt, image, description, pinCount } = topicDetail;
   const { year, month, day } = parseDate(updatedAt);
 
-  const onClickImageDelete = async (topicId: any) => {
+  const onClickImageDelete = (topicId: string) => {
     // 이미지 삭제 API 호출
     const deleteUrl = `${selectedUrl}/admin/topics/${topicId}/images`;
-    try {
-      await fetchData(deleteUrl, selectedDB, 'DELETE');
-    } catch (e) {
-      console.error(e);
-    }
+    fetchData(deleteUrl, selectedDB, 'DELETE')
+      .then(() => {
+        console.log('Image deleted successfully');
+      })
+      .catch((e) => {
+        console.error(e);
+      });
   };
 
   return (
@@ -43,7 +45,7 @@ const TopicDetailComponent: React.FC<TopicDetailComponentProps> = ({ topicId }) 
         <p>작성자: {creator}</p>
         <p>생성일: {`${year}년 ${month}월 ${day}일`}</p>
       </Header>
-      <DetailImage imgHeight="50vh" src={image || DefaultImage} alt={name} onError={onImageError} />
+      <DetailImage imgHeight="50vh" src={image ?? DefaultImage} alt={name} onError={onImageError} />
       <DeleteButton onClick={() => onClickImageDelete(topicId)}>이미지 삭제</DeleteButton>
       <ContentContainer>
         <p>{description}</p>

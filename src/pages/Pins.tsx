@@ -1,10 +1,11 @@
 import { Suspense } from 'react';
+import { useLocation } from 'react-router-dom';
+
 import ErrorBoundary from '../components/ErrorBoundary';
 import MainLayout from '../components/Layout/MainLayout';
 import PinDetailComponent from '../components/PinDetail';
-import { useLocation } from 'react-router-dom';
-import { useDBContext } from '../context/DbSelectContext';
 import { DEFAULT_URL } from '../constants/constant';
+import { useDBContext } from '../context/DbSelectContext';
 
 const Pin = () => {
   const { selectedDB } = useDBContext();

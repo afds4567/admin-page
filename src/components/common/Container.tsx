@@ -13,13 +13,13 @@ export interface ContainerProps {
 }
 
 const Container = styled.div<ContainerProps>`
-  display: ${({ display }) => display || 'block'};
-  width: ${({ width }) => width || 'auto'};
-  height: ${({ height }) => height || 'auto'};
-  min-width: ${({ minWidth }) => minWidth || '0'};
-  min-height: ${({ minHeight }) => minHeight || '0'};
+  display: ${({ display }) => display ?? 'block'};
+  width: ${({ width }) => width ?? 'auto'};
+  height: ${({ height }) => height ?? 'auto'};
+  min-width: ${({ minWidth }) => minWidth ?? '0'};
+  min-height: ${({ minHeight }) => minHeight ?? '0'};
   padding: ${({ padding }) => padding};
-  background-color: ${({ backgroundColor }) => (backgroundColor ? backgroundColor : 'transparent')};
+  background-color: ${({ backgroundColor }) => backgroundColor ?? 'transparent'};
   backdrop-filter: ${({ backdropFilter }) => backdropFilter};
   overflow: ${({ overflow }) => overflow};
 `;

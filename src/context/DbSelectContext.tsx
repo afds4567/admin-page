@@ -1,4 +1,5 @@
-import { createContext, useContext, useState, ReactNode } from 'react';
+/* eslint-disable @typescript-eslint/consistent-type-assertions */
+import { createContext, ReactNode, useContext, useState } from 'react';
 
 interface DBContextProps {
   selectedDB: string;

@@ -1,16 +1,18 @@
+/* eslint-disable @typescript-eslint/no-throw-literal */
 import { useEffect, useState } from 'react';
+
 import { useDBContext } from '../context/DbSelectContext';
 //
 export async function fetchData(url: string, selectedDB: any, method = 'GET') {
   const headers: any = {};
 
-  headers['Authorization'] = `${process.env.REACT_APP_ADMIN_KEY}`;
+  headers.Authorization = `${process.env.REACT_APP_ADMIN_KEY ?? ''}`;
 
   console.log(process.env.REACT_APP_ADMIN_KEY);
 
-  let response = await fetch(url, {
-    method: method,
-    headers: headers
+  const response = await fetch(url, {
+    method,
+    headers
   });
 
   if (method === 'DELETE' && response.status === 204) {
@@ -19,7 +21,7 @@ export async function fetchData(url: string, selectedDB: any, method = 'GET') {
   }
   if (!response.ok) throw new Error(`HTTP 에러! 상태 코드: ${response.status}`);
 
-  return response.json();
+  return await response.json();
 }
 
 const useFetch = <T>(
@@ -48,7 +50,7 @@ const useFetch = <T>(
     );
   }, [url]);
 
-  if (status === 'pending' && promise) {
+  if (status === 'pending' && promise != null) {
     throw promise;
   }
 

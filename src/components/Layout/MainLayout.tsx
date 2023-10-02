@@ -1,18 +1,20 @@
+/* eslint-disable @typescript-eslint/no-misused-promises */
 import { useState } from 'react';
-import useFetch, { fetchData } from '../../hooks/useFetch';
-import styled from 'styled-components';
-import { Topic } from '../../types/topic';
-import { Member } from '../../types/member';
-import { Pin } from '../../types/pin';
 import { useLocation, useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
+
 import { DEFAULT_URL } from '../../constants/constant';
 import { useDBContext } from '../../context/DbSelectContext';
+import useFetch, { fetchData } from '../../hooks/useFetch';
+import { Member } from '../../types/member';
+import { Pin } from '../../types/pin';
+import { Topic } from '../../types/topic';
 
-type Props = {
+interface Props {
   url: string;
   title: string;
   children?: React.ReactNode;
-};
+}
 
 type Item = Topic | Member | Pin;
 type Items = Topic[] | Member[] | Pin[];
@@ -37,7 +39,7 @@ const MainLayout = ({ url, title, children }: Props) => {
     // 삭제 API 호출
     const deleteUrl = `${selectedUrl}${location.pathname}/${item?.id}`;
     try {
-      await fetchData(deleteUrl, selectedDB, 'DELETE'); // Add await here
+      await fetchData(deleteUrl, selectedDB, 'DELETE');
     } catch (e) {
       console.error(e);
     }
@@ -51,7 +53,7 @@ const MainLayout = ({ url, title, children }: Props) => {
           {items?.map((item) => (
             <ListItem
               key={item.id}
-              selected={selectedItem?.id == item.id}
+              selected={selectedItem?.id === item.id}
               onClick={() => onClickItem(item)}
             >
               {'nickName' in item ? item.nickName : item.name}

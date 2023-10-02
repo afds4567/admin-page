@@ -37,7 +37,7 @@ export const Header = styled.div`
 export const DetailImage = styled.img<ImageProps>`
   margin-top: 20px;
 
-  height: ${(props) => props.imgHeight || '50vh'};
+  height: ${(props) => props.imgHeight ?? '50vh'};
   border-radius: 10%;
 
   object-fit: fill;

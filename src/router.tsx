@@ -14,23 +14,23 @@ interface RouteElement {
 
 const routes: RouteElement[] = [
   {
-    path: '/admin',
+    path: '/',
     element: <RootLayout />,
     children: [
       {
-        path: '/admin',
+        path: '/',
         element: <Home />
       },
       {
-        path: '/admin/members',
+        path: '/members',
         element: <Members />
       },
       {
-        path: '/admin/topics',
+        path: '/topics',
         element: <Topics />
       },
       {
-        path: '/admin/pins',
+        path: '/pins',
         element: <Pins />
       }
     ]

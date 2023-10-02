@@ -1,8 +1,9 @@
+import DefaultImage from '../assets/DefaultImage.png';
+import { DEFAULT_URL } from '../constants/constant';
+import { useDBContext } from '../context/DbSelectContext';
 import useFetch, { fetchData } from '../hooks/useFetch';
 import { Pin } from '../types/pin';
 import parseDate from '../utils/parseDate';
-import DefaultImage from '../assets/DefaultImage.png';
-
 import {
   ContentContainer,
   DeleteButton,
@@ -11,8 +12,6 @@ import {
   Header,
   PositionContainer
 } from './DetailLayoutStyle';
-import { useDBContext } from '../context/DbSelectContext';
-import { DEFAULT_URL } from '../constants/constant';
 
 interface PinDetailComponentProps {
   pinId: string;
@@ -25,21 +24,23 @@ const PinDetailComponent = ({ pinId }: PinDetailComponentProps) => {
 
   const pinDetail = useFetch<Pin>(fetchData, url);
 
-  if (!pinDetail) return <div>핀 정보가 없습니다.</div>;
+  if (pinDetail == null) return <div>핀 정보가 없습니다.</div>;
   const { name, address, description, creator, latitude, longitude, updatedAt, images } = pinDetail;
 
   const onImageError = (e: any) => {
     e.target.src = DefaultImage;
   };
   const { year, month, day } = parseDate(updatedAt);
-  const onClickImageDelete = async (pinId: any) => {
+  const onClickImageDelete = (pinId: string) => {
     // 이미지 삭제 API 호출
     const deleteUrl = `${selectedUrl}/admin/pins/images/${pinId}`;
-    try {
-      await fetchData(deleteUrl, selectedDB, 'DELETE');
-    } catch (e) {
-      console.error(e);
-    }
+    fetchData(deleteUrl, selectedDB, 'DELETE')
+      .then(() => {
+        console.log('Image deleted successfully');
+      })
+      .catch((e) => {
+        console.error(e);
+      });
   };
 
   return (
@@ -53,7 +54,7 @@ const PinDetailComponent = ({ pinId }: PinDetailComponentProps) => {
           <>
             <DetailImage
               key={image.id}
-              src={image.imageUrl || DefaultImage}
+              src={image.imageUrl ?? DefaultImage}
               alt="주황치마다빈치"
               onError={onImageError}
             />

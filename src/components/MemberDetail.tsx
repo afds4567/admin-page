@@ -23,7 +23,7 @@ const MemberDetailComponent = ({ memberId }: MemberDetailComponentProps) => {
 
   const memberDetail = useFetch<MemberDetail>(fetchData, url);
 
-  if (!memberDetail) return <div>멤버 정보가 없습니다.</div>;
+  if (memberDetail == null) return <div>멤버 정보가 없습니다.</div>;
   const { nickName, email, imageUrl, updatedAt, topics } = memberDetail;
   const { year, month, day } = parseDate(updatedAt);
 
