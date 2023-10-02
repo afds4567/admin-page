@@ -11,7 +11,12 @@ import { Member } from '../types/member';
 import { Pin } from '../types/pin';
 import { isMember, isPin, isTopic, SearchResult } from '../types/search';
 import { Topic } from '../types/topic';
-import { countFromSpecificDate } from '../utils/countMember';
+import {
+  countFromSpecificDate,
+  countsTopic,
+  countTopicsFromDate,
+  countUniqueCreators
+} from '../utils/countMember';
 
 const Home = () => {
   const navigate = useNavigate();
@@ -143,10 +148,24 @@ const Home = () => {
         </SearchBarWrapper>
 
         <DashBoard>
-          대시보드
-          <h1>총 회원 수 : {membersData?.length}</h1>
-          <h1>10/2일부터 모인 회원 수 : {countFromSpecificDate(membersData ?? [], 2023, 10, 2)}</h1>
-          <Chart data={membersData ?? []} startDaysAgo={7} />
+          <div style={{ display: 'flex', fontWeight: 'bold', color: 'orange', fontSize: '48px' }}>
+            총 회원 수 : {membersData?.length} 명 / 지도 제작한 회원 수 :
+            {countUniqueCreators(topicsData ?? [])} 명
+          </div>
+          <div style={{ display: 'flex', fontWeight: 'normal', color: 'orange', fontSize: '36px' }}>
+            10월 2일부터 모인 회원 수 : {countFromSpecificDate(membersData ?? [], 2023, 10, 2)} 명 /
+            10월 2일 이후 가입자 중 지도 제작 인원 :
+            {countsTopic(topicsData ?? [], membersData ?? [], 7).uniqueCreatorsCount} 명
+          </div>
+          <Chart data={membersData ?? []} startDaysAgo={7} selectedTarget={'members'} />
+          <h1>총 지도 수 : {topicsData?.length}</h1>
+          <h1>10월 2일이후 만들어진 지도 수 : {countTopicsFromDate(topicsData ?? [], 7)}</h1>
+          <Chart
+            data={topicsData ?? []}
+            subData={membersData}
+            startDaysAgo={7}
+            selectedTarget={'topics'}
+          />
         </DashBoard>
       </Grid>
     </Suspense>
@@ -229,4 +248,5 @@ const DashBoard = styled.div`
   flex-direction: column;
   align-items: center;
 `;
+
 export default Home;

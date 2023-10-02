@@ -1,21 +1,35 @@
 import styled from 'styled-components';
 
 import { Member } from '../types/member';
-import { counts } from '../utils/countMember';
+import { isMember, isTopic, SearchResult } from '../types/search';
+import { counts, countsTopic } from '../utils/countMember';
 
 interface ChartProps {
-  data: Member[];
+  data: SearchResult[];
   startDaysAgo: number;
+  selectedTarget: 'members' | 'pins' | 'topics';
+  subData?: Member[];
 }
 
-export const Chart = ({ data, startDaysAgo }: ChartProps) => {
-  const dataCounts = counts(data, startDaysAgo);
+export const Chart = ({ data, subData = [], startDaysAgo, selectedTarget }: ChartProps) => {
+  let dataCounts;
+  let maxCount = 0;
 
-  const maxCount = Math.max(...Object.values(dataCounts));
+  if (selectedTarget === 'members') {
+    if (data.every(isMember)) {
+      dataCounts = counts(data, startDaysAgo);
+      maxCount = Math.max(...Object.values(dataCounts));
+    }
+  } else if (selectedTarget === 'topics') {
+    if (data.every(isTopic)) {
+      dataCounts = countsTopic(data, subData, startDaysAgo).countsPerDate;
+      maxCount = Math.max(...Object.values(dataCounts));
+    }
+  }
 
   return (
     <ChartContainer>
-      {Object.entries(dataCounts).map(([date, count]) => {
+      {Object.entries(dataCounts ?? []).map(([date, count]) => {
         const barLengthNormalized = Math.floor((count / maxCount) * 100);
 
         return (
