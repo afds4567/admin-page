@@ -11,6 +11,7 @@ import { Member } from '../types/member';
 import { Pin } from '../types/pin';
 import { isMember, isPin, isTopic, SearchResult } from '../types/search';
 import { Topic } from '../types/topic';
+import { countFromSpecificDate } from '../utils/countMember';
 
 const Home = () => {
   const navigate = useNavigate();
@@ -144,6 +145,7 @@ const Home = () => {
         <DashBoard>
           대시보드
           <h1>총 회원 수 : {membersData?.length}</h1>
+          <h1>10/2일부터 모인 회원 수 : {countFromSpecificDate(membersData ?? [], 2023, 10, 2)}</h1>
           <Chart data={membersData ?? []} startDaysAgo={7} />
         </DashBoard>
       </Grid>

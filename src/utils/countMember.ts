@@ -29,3 +29,20 @@ export const counts = (data: Member[], startDaysAgo: number): Record<string, num
     return acc;
   }, initialAccumulator);
 };
+
+export const countFromSpecificDate = (
+  data: Member[],
+  year: number,
+  month: number,
+  day: number
+): number => {
+  const specificDate = new Date(year, month - 1, day);
+
+  return data.reduce((count, member) => {
+    const memberDate = new Date(member.updatedAt);
+    if (memberDate >= specificDate) {
+      count++;
+    }
+    return count;
+  }, 0);
+};
