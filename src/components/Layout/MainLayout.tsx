@@ -1,5 +1,6 @@
+/* eslint-disable @typescript-eslint/consistent-type-assertions */
 /* eslint-disable @typescript-eslint/no-misused-promises */
-import { useState } from 'react';
+import { createRef, RefObject, useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -22,12 +23,35 @@ type Items = Topic[] | Member[] | Pin[];
 const MainLayout = ({ url, title, children }: Props) => {
   const location = useLocation();
   const navigate = useNavigate();
-
+  // get id from url
   const { selectedDB } = useDBContext();
   const selectedUrl = DEFAULT_URL[selectedDB];
 
   const items = useFetch<Items>(fetchData, url);
+  const id = location.search.split('?')[1];
   const [selectedItem, setSelectedItem] = useState<Item>();
+
+  const refs: Record<number, RefObject<HTMLLIElement>> = (items ?? []).reduce((acc, value) => {
+    acc[value.id] = createRef();
+    return acc;
+  }, {} as Record<number, RefObject<HTMLLIElement>>);
+
+  useEffect(() => {
+    const itemFromUrl = items?.find((item) => item.id === Number(id));
+
+    if (itemFromUrl) {
+      setSelectedItem(itemFromUrl);
+    }
+  }, [items, id]);
+
+  useEffect(() => {
+    // Scroll to the selected item
+    selectedItem &&
+      refs[selectedItem.id].current?.scrollIntoView({
+        behavior: 'instant',
+        block: 'nearest'
+      });
+  }, [selectedItem]);
 
   const onClickItem = (item: Item) => {
     setSelectedItem(item);
@@ -52,13 +76,14 @@ const MainLayout = ({ url, title, children }: Props) => {
         <ListContainer>
           {items?.map((item) => (
             <ListItem
+              ref={refs[item.id]}
               key={item.id}
               selected={selectedItem?.id === item.id}
               onClick={() => onClickItem(item)}
             >
               {'nickName' in item ? item.nickName : item.name}
               <div>
-                <DeleteButton onClick={() => onClickDelete(item)}>삭제</DeleteButton>
+                <DeleteButton onClick={async () => await onClickDelete(item)}>삭제</DeleteButton>
               </div>
             </ListItem>
           ))}
@@ -73,7 +98,7 @@ export const SideBar = styled.div`
   grid-area: sideBar;
   padding: 1rem;
   height: 100%;
-  background-color: #000; // Change to black
+  background-color: #000;
 
   overflow-y: auto;
   // Chrome, Safari and Opera
