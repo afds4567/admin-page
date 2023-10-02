@@ -23,8 +23,8 @@ const GNB = () => {
           </StyledLink>
         ))}
         <select onChange={handleDBChange} value={selectedDB}>
-          <option value="dev">배포서버</option>
           <option value="prod">운영서버</option>
+          <option value="dev">배포서버</option>
         </select>
       </MenuContainer>
     </Nav>

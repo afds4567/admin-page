@@ -21,7 +21,7 @@ interface DBProviderProps {
 }
 
 export function DBProvider({ children }: DBProviderProps): JSX.Element {
-  const [selectedDB, setSelectedDB] = useState('dev');
+  const [selectedDB, setSelectedDB] = useState('prod');
 
   const handleDBChange = (e: any) => {
     setSelectedDB(e.target.value);
